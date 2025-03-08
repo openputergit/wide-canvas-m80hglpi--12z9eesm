@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyMentor - Gen Z Finance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f2f5;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="bg-indigo-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">MoneyMentor</h1>
+            <div id="userSection" class="hidden">
+                <button id="logoutBtn" class="bg-indigo-700 px-4 py-2 rounded-lg">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
+            </div>
+            <div id="authSection">
+                <button id="loginBtn" class="bg-indigo-700 px-4 py-2 rounded-lg">Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4">
+        <!-- Login/Register Form -->
+        <div id="authForm" class="max-w-md mx-auto glassmorphism p-6 mt-10">
+            <h2 class="text-2xl font-bold mb-6 text-center">Welcome to MoneyMentor</h2>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">
+                    Login
+                </button>
+            </form>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="hidden">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Balance Card -->
+                <div class="glassmorphism p-6">
+                    <h3 class="text-lg font-semibold mb-2">Total Balance</h3>
+                    <p class="text-3xl font-bold text-indigo-600">$<span id="totalBalance">0</span></p>
+                </div>
+                <!-- Income Card -->
+                <div class="glassmorphism p-6">
+                    <h3 class="text-lg font-semibold mb-2">Monthly Income</h3>
+                    <p class="text-3xl font-bold text-green-600">$<span id="monthlyIncome">0</span></p>
+                </div>
+                <!-- Expenses Card -->
+                <div class="glassmorphism p-6">
+                    <h3 class="text-lg font-semibold mb-2">Monthly Expenses</h3>
+                    <p class="text-3xl font-bold text-red-600">$<span id="monthlyExpenses">0</span></p>
+                </div>
+            </div>
+
+            <!-- Add Transaction -->
+            <div class="glassmorphism p-6 mb-6">
+                <h3 class="text-xl font-semibold mb-4">Add Transaction</h3>
+                <form id="transactionForm" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Amount</label>
+                            <input type="number" id="amount" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Type</label>
+                            <select id="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Category</label>
+                            <select id="category" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option value="salary">Salary</option>
+                                <option value="food">Food</option>
+                                <option value="transport">Transport</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="shopping">Shopping</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">
+                        Add Transaction
+                    </button>
+                </form>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="glassmorphism p-6">
+                <h3 class="text-xl font-semibold mb-4">Recent Transactions</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionsList" class="bg-white divide-y divide-gray-200">
+                            <!-- Transactions will be added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Simple state management
+        let currentUser = null;
+        let transactions = [];
+
+        // DOM Elements
+        const authForm = document.getElementById('authForm');
+        const dashboard = document.getElementById('dashboard');
+        const loginForm = document.getElementById('loginForm');
+        const transactionForm = document.getElementById('transactionForm');
+        const userSection = document.getElementById('userSection');
+        const authSection = document.getElementById('authSection');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Login functionality
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple mock authentication
+            currentUser = { email, id: Date.now() };
+            showDashboard();
+        });
+
+        // Logout functionality
+        logoutBtn.addEventListener('click', () => {
+            currentUser = null;
+            transactions = [];
+            showLoginForm();
+        });
+
+        // Add transaction
+        transactionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById('amount').value);
+            const type = document.getElementById('type').value;
+            const category = document.getElementById('category').value;
+
+            const transaction = {
+                id: Date.now(),
+                amount,
+                type,
+                category,
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            transactions.unshift(transaction);
+            updateDashboard();
+            transactionForm.reset();
+        });
+
+        function showDashboard() {
+            authForm.classList.add('hidden');
+            dashboard.classList.remove('hidden');
+            userSection.classList.remove('hidden');
+            authSection.classList.add('hidden');
+            updateDashboard();
+        }
+
+        function showLoginForm() {
+            authForm.classList.remove('hidden');
+            dashboard.classList.add('hidden');
+            userSection.classList.add('hidden');
+            authSection.classList.remove('hidden');
+        }
+
+        function updateDashboard() {
+            // Update balances
+            const totalBalance = transactions.reduce((acc, curr) => 
+                curr.type === 'income' ? acc + curr.amount : acc - curr.amount, 0);
+            
+            const monthlyIncome = transactions
+                .filter(t => t.type === 'income')
+                .reduce((acc, curr) => acc + curr.amount, 0);
+
+            const monthlyExpenses = transactions
+                .filter(t => t.type === 'expense')
+                .reduce((acc, curr) => acc + curr.amount, 0);
+
+            document.getElementById('totalBalance').textContent = totalBalance.toFixed(2);
+            document.getElementById('monthlyIncome').textContent = monthlyIncome.toFixed(2);
+            document.getElementById('monthlyExpenses').textContent = monthlyExpenses.toFixed(2);
+
+            // Update transactions list
+            const transactionsList = document.getElementById('transactionsList');
+            transactionsList.innerHTML = transactions.map(t => `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">${t.date}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            t.type === 'income' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                        }">
+                            ${t.type}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">${t.category}</td>
+                    <td class="px-6 py-4 whitespace-nowrap ${
+                        t.type === 'income' ? 'text-green-600' : 'text-red-600'
+                    }">
+                        ${t.type === 'income' ? '+' : '-'}$${t.amount.toFixed(2)}
+                    </td>
+                </tr>
+            `).join('');
+        }
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
